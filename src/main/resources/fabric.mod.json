@@ -1,0 +1,29 @@
+{
+	"schemaVersion": 1,
+	"id": "uc",
+	"version": "${version}",
+	"name": "Ultimate Compression",
+	"description": "Compress blocks and items into denser variants. Tier 1 = 9x, Tier 2 = 81x.",
+	"authors": [
+		"VoidCallerZ"
+	],
+	"contact": {
+    	"homepage": "https://github.com/VoidCallerZ/UltimateCompression",
+    	"issues": "https://github.com/VoidCallerZ/UltimateCompression/issues"
+	},
+	"license": "MIT",
+	"icon": "assets/uc/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.voidcallerz.uc.UltimateCompression"
+		]
+	},
+	"mixins": [],
+	"depends": {
+		"fabricloader": ">=0.19.2",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
