@@ -8,43 +8,48 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 /**
  * Fabric ore generation — uses BiomeModifications API instead of JSON files.
- * Configured and placed features are still registered via DatapackBuiltinEntries
- * but biome injection is done in code.
+ * Placed feature JSONs still needed in resources; this just injects them into biomes.
  */
 public class UCOreGen {
 
-    private static final Object[][] ORE_CONFIGS = {
-        { "compressed_coal_ore",     3, 2, -64, -32 },
-        { "compressed_iron_ore",     3, 2, -64, -32 },
-        { "compressed_gold_ore",     2, 1, -64, -32 },
-        { "compressed_copper_ore",   3, 2, -64, -16 },
-        { "compressed_diamond_ore",  1, 1, -64, -48 },
-        { "compressed_emerald_ore",  1, 1, -64, -32 },
-        { "compressed_lapis_ore",    2, 1, -64, -32 },
-        { "compressed_redstone_ore", 2, 2, -64, -32 },
+    private static final String[] OVERWORLD_ORES = {
+        "compressed_coal_ore",
+        "compressed_iron_ore",
+        "compressed_gold_ore",
+        "compressed_copper_ore",
+        "compressed_diamond_ore",
+        "compressed_emerald_ore",
+        "compressed_lapis_ore",
+        "compressed_redstone_ore",
+    };
+
+    private static final String[] NETHER_ORES = {
+        "compressed_nether_quartz_ore",
+        "compressed_nether_gold_ore",
     };
 
     public static void register() {
-        for (Object[] ore : ORE_CONFIGS) {
-            String oreName = (String) ore[0];
-            int veinSize   = (int)    ore[1];
-            int count      = (int)    ore[2];
-            int minY       = (int)    ore[3];
-            int maxY       = (int)    ore[4];
-
+        for (String name : OVERWORLD_ORES) {
             ResourceKey<PlacedFeature> key = ResourceKey.create(
                 Registries.PLACED_FEATURE,
-                ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, oreName));
-
+                ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name));
             BiomeModifications.addFeature(
                 BiomeSelectors.tag(BiomeTags.IS_OVERWORLD),
                 GenerationStep.Decoration.UNDERGROUND_ORES,
-                key
-            );
+                key);
+        }
+        for (String name : NETHER_ORES) {
+            ResourceKey<PlacedFeature> key = ResourceKey.create(
+                Registries.PLACED_FEATURE,
+                ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name));
+            BiomeModifications.addFeature(
+                BiomeSelectors.tag(BiomeTags.IS_NETHER),
+                GenerationStep.Decoration.UNDERGROUND_ORES,
+                key);
         }
     }
 }

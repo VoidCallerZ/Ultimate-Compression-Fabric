@@ -21,14 +21,16 @@ public class UCOres {
     public static final Map<String, Block> ALL_ORE_BLOCKS = new LinkedHashMap<>();
 
     private static final Object[][] ORES = {
-        { "compressed_coal_ore",     MapColor.DEEPSLATE, 0,  2 },
-        { "compressed_iron_ore",     MapColor.DEEPSLATE, 0,  0 },
-        { "compressed_gold_ore",     MapColor.DEEPSLATE, 0,  0 },
-        { "compressed_copper_ore",   MapColor.DEEPSLATE, 0,  0 },
-        { "compressed_diamond_ore",  MapColor.DEEPSLATE, 9, 21 },
-        { "compressed_emerald_ore",  MapColor.DEEPSLATE, 9, 21 },
-        { "compressed_lapis_ore",    MapColor.DEEPSLATE, 6, 15 },
-        { "compressed_redstone_ore", MapColor.DEEPSLATE, 3, 15 },
+        { "compressed_coal_ore",         MapColor.DEEPSLATE, 0,  2 },
+        { "compressed_iron_ore",         MapColor.DEEPSLATE, 0,  0 },
+        { "compressed_gold_ore",         MapColor.DEEPSLATE, 0,  0 },
+        { "compressed_copper_ore",       MapColor.DEEPSLATE, 0,  0 },
+        { "compressed_diamond_ore",      MapColor.DEEPSLATE, 9, 21 },
+        { "compressed_emerald_ore",      MapColor.DEEPSLATE, 9, 21 },
+        { "compressed_lapis_ore",        MapColor.DEEPSLATE, 6, 15 },
+        { "compressed_redstone_ore",     MapColor.DEEPSLATE, 3, 15 },
+        { "compressed_nether_quartz_ore",MapColor.NETHER,    2,  5 },
+        { "compressed_nether_gold_ore",  MapColor.NETHER,    0,  0 },
     };
 
     public static void register() {
@@ -38,9 +40,14 @@ public class UCOres {
             int      xpMin = (int)      ore[2];
             int      xpMax = (int)      ore[3];
 
-            BlockBehaviour.Properties props = BlockBehaviour.Properties.of()
-                .mapColor(color).sound(SoundType.DEEPSLATE)
-                .strength(5.0f, 3.0f).requiresCorrectToolForDrops();
+            boolean isNether = name.contains("nether");
+            BlockBehaviour.Properties props = isNether
+                ? BlockBehaviour.Properties.of()
+                    .mapColor(color).sound(SoundType.NETHERRACK)
+                    .strength(3.0f, 3.0f)
+                : BlockBehaviour.Properties.of()
+                    .mapColor(color).sound(SoundType.DEEPSLATE)
+                    .strength(5.0f, 3.0f).requiresCorrectToolForDrops();
 
             Block block = (xpMin == 0 && xpMax == 0)
                 ? new Block(props)

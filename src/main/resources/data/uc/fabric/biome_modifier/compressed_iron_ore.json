@@ -1,0 +1,6 @@
+{
+    "type": "fabric:add_features",
+    "biomes": "#minecraft:is_overworld",
+    "features": "uc:compressed_iron_ore",
+    "step": "underground_ores"
+}
