@@ -73,10 +73,13 @@ STANDARD_MATERIALS = [
     "magenta_concrete", "brown_concrete", "light_blue_concrete", "lime_concrete",
     # Misc
     "red_sand",
+    # Natural Blocks
+    "sandstone", "red_sandstone", "ice", "packed_ice", "blue_ice", "clay",
+    "snow_block", "moss_block", "end_stone",
 ]
 
 TOP_BOTTOM_MATERIALS = [
-    
+    "sandstone", "red_sandstone",
 ]
 
 LOG_MATERIALS = [
