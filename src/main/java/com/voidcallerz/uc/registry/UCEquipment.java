@@ -1,11 +1,14 @@
 package com.voidcallerz.uc.registry;
 
 import com.voidcallerz.uc.ModConstants;
-import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorType;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -15,47 +18,54 @@ public class UCEquipment {
     public static final Map<String, Item> ALL_EQUIPMENT = new LinkedHashMap<>();
 
     private static final Object[][] TOOL_TIERS = {
-        { "wood",      UCToolTiers.COMPRESSED_WOOD      },
-        { "stone",     UCToolTiers.COMPRESSED_STONE     },
-        { "iron",      UCToolTiers.COMPRESSED_IRON      },
-        { "gold",      UCToolTiers.COMPRESSED_GOLD      },
-        { "diamond",   UCToolTiers.COMPRESSED_DIAMOND   },
-        { "netherite", UCToolTiers.COMPRESSED_NETHERITE },
+        { "wood",      UCToolTiers.COMPRESSED_WOOD,      5.0f, -3.2f },
+        { "stone",     UCToolTiers.COMPRESSED_STONE,     6.0f, -3.2f },
+        { "iron",      UCToolTiers.COMPRESSED_IRON,      7.0f, -3.1f },
+        { "gold",      UCToolTiers.COMPRESSED_GOLD,      5.0f, -3.2f },
+        { "diamond",   UCToolTiers.COMPRESSED_DIAMOND,   8.0f, -3.0f },
+        { "netherite", UCToolTiers.COMPRESSED_NETHERITE, 9.0f, -3.0f },
     };
 
     public static void register() {
-        // Tools
         for (Object[] entry : TOOL_TIERS) {
-            String      mat  = (String)      entry[0];
-            UCToolTiers tier = (UCToolTiers) entry[1];
-            String      pre  = "compressed_" + mat;
-            reg(pre + "_sword",   new SwordItem(tier,   new Item.Properties()));
-            reg(pre + "_pickaxe", new PickaxeItem(tier, new Item.Properties()));
-            reg(pre + "_axe",     new AxeItem(tier,     new Item.Properties()));
-            reg(pre + "_shovel",  new ShovelItem(tier,  new Item.Properties()));
-            reg(pre + "_hoe",     new HoeItem(tier,     new Item.Properties()));
+            String       mat      = (String)       entry[0];
+            ToolMaterial material = (ToolMaterial) entry[1];
+            float        axeDmg   = (float)        entry[2];
+            float        axeSpd   = (float)        entry[3];
+            String       pre      = "compressed_" + mat;
+            final float fd = axeDmg, fs = axeSpd;
+
+            reg(pre + "_sword",   name -> new SwordItem(material, 3, -2.4f,     props(name)));
+            reg(pre + "_pickaxe", name -> new PickaxeItem(material, 1, -2.8f,   props(name)));
+            reg(pre + "_axe",     name -> new AxeItem(material, fd, fs,         props(name)));
+            reg(pre + "_shovel",  name -> new ShovelItem(material, 1.5f, -3.0f, props(name)));
+            reg(pre + "_hoe",     name -> new HoeItem(material, 0, -3.0f,       props(name)));
         }
 
-        // Armor
         armorSet("iron",      UCArmorMaterials.COMPRESSED_IRON);
         armorSet("gold",      UCArmorMaterials.COMPRESSED_GOLD);
         armorSet("diamond",   UCArmorMaterials.COMPRESSED_DIAMOND);
         armorSet("netherite", UCArmorMaterials.COMPRESSED_NETHERITE);
     }
 
-    private static void armorSet(String mat, Holder<ArmorMaterial> material) {
+    private static void armorSet(String mat, ArmorMaterial material) {
         String pre = "compressed_" + mat;
-        for (ArmorItem.Type type : new ArmorItem.Type[]{
-                ArmorItem.Type.HELMET, ArmorItem.Type.CHESTPLATE,
-                ArmorItem.Type.LEGGINGS, ArmorItem.Type.BOOTS}) {
-            reg(pre + "_" + type.getName(),
-                new ArmorItem(material, type,
-                    new Item.Properties().durability(
-                        UCArmorMaterials.getDurability(material, type))));
+        for (ArmorType type : new ArmorType[]{
+                ArmorType.HELMET, ArmorType.CHESTPLATE,
+                ArmorType.LEGGINGS, ArmorType.BOOTS}) {
+            String name = pre + "_" + type.getName();
+            reg(name, n -> new ArmorItem(material, type, props(n)));
         }
     }
 
-    private static void reg(String name, Item item) {
+    private static Item.Properties props(String name) {
+        ResourceKey<Item> key = ResourceKey.create(Registries.ITEM,
+            ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name));
+        return new Item.Properties().setId(key);
+    }
+
+    private static void reg(String name, java.util.function.Function<String, Item> factory) {
+        Item item = factory.apply(name);
         Registry.register(BuiltInRegistries.ITEM,
             ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name), item);
         ALL_EQUIPMENT.put(name, item);

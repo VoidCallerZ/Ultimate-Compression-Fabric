@@ -12,6 +12,8 @@ import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -41,13 +43,19 @@ public class UCOres {
             int      xpMax = (int)      ore[3];
 
             boolean isNether = name.contains("nether");
+
+            ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK,
+                ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name));
+
             BlockBehaviour.Properties props = isNether
                 ? BlockBehaviour.Properties.of()
                     .mapColor(color).sound(SoundType.NETHERRACK)
                     .strength(3.0f, 3.0f)
+                    .setId(blockKey)
                 : BlockBehaviour.Properties.of()
                     .mapColor(color).sound(SoundType.DEEPSLATE)
-                    .strength(5.0f, 3.0f).requiresCorrectToolForDrops();
+                    .strength(5.0f, 3.0f).requiresCorrectToolForDrops()
+                    .setId(blockKey);
 
             Block block = (xpMin == 0 && xpMax == 0)
                 ? new Block(props)
@@ -57,8 +65,10 @@ public class UCOres {
                 ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name), block);
             ALL_ORE_BLOCKS.put(name, block);
 
-            // BlockItem
-            BlockItem item = new BlockItem(block, new Item.Properties());
+            // BlockItem also needs setId() in 1.21.2
+            ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM,
+                ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name));
+            BlockItem item = new BlockItem(block, new Item.Properties().setId(itemKey));
             Registry.register(BuiltInRegistries.ITEM,
                 ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name), item);
         }

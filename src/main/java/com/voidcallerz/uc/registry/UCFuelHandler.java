@@ -1,15 +1,17 @@
 package com.voidcallerz.uc.registry;
 
-import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.fabricmc.fabric.api.registry.FuelRegistryEvents;
 
 /**
  * Registers fuel burn times for compressed fuel items.
- * For Fabric 1.21.1, use FuelRegistry.INSTANCE (FuelRegistryEvents is 1.21.2+)
+ * Fabric 1.21.2+ uses FuelRegistryEvents instead of FuelRegistry.INSTANCE.
  */
 public class UCFuelHandler {
 
     public static void register() {
-        FuelRegistry.INSTANCE.add(UCItemRegistry.ALL_ITEMS.get("compressed_coal"),      14400);
-        FuelRegistry.INSTANCE.add(UCItemRegistry.ALL_ITEMS.get("compressed_blaze_rod"), 11200);
+        FuelRegistryEvents.BUILD.register((builder, context) -> {
+            builder.add(UCItemRegistry.ALL_ITEMS.get("compressed_coal"),      14400);
+            builder.add(UCItemRegistry.ALL_ITEMS.get("compressed_blaze_rod"), 11200);
+        });
     }
 }

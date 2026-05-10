@@ -20,18 +20,15 @@ public class UltimateCompression implements ModInitializer {
         UCItemRegistry.register();
         // 4. Ore blocks and their items
         UCOres.register();
-        // 5. Armor materials MUST be registered before equipment
-        //    ArmorItem holds a Holder<ArmorMaterial> — null if not registered yet
-        UCArmorMaterials.register();
-        // 6. Tools and armor — references armor materials and items
+        // 5. Tools and armor — references armor materials and items
         UCEquipment.register();
-        // 7. Creative tab — references all of the above
+        // 6. Creative tab — references all of the above
         UCCreativeTabs.register();
-        // 8. Fuel handler — references items
+        // 7. Fuel handler — references items
         UCFuelHandler.register();
-        // 9. Ore generation — injects placed features into overworld biomes
+        // 8. Ore generation — injects placed features into overworld biomes
         UCOreGen.register();
-        // 10. Armor effects — registers tick event callback
+        // 9. Armor effects — registers tick event callback
         UCArmorEffects.register();
 
         LOGGER.info("{} is loading — {} tiers, auto-registration active.",

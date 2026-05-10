@@ -1,22 +1,23 @@
 package com.voidcallerz.uc.registry;
 
 import com.voidcallerz.uc.ModConstants;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.equipment.ArmorMaterial;
 
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 
 /**
- * In Fabric 1.21.1, ArmorMaterial is registered via Registry.register
- * just like any other registry object.
+ * In Fabric 1.21.2, ArmorMaterial is no longer a registry object.
+ * It's a plain record in net.minecraft.world.item.equipment.
+ * No registration needed — just create constants directly.
+ *
+ * Defense map uses ArmorItem.Type (same as 1.21.1 Fabric).
+ * Last parameter is a ResourceLocation pointing to
+ * assets/<modid>/models/equipment/<name>.json
  */
 public class UCArmorMaterials {
 
@@ -25,64 +26,43 @@ public class UCArmorMaterials {
     public static final int DIAMOND_DUR   = 33 * 9;
     public static final int NETHERITE_DUR = 37 * 9;
 
-    public static Holder<ArmorMaterial> COMPRESSED_IRON;
-    public static Holder<ArmorMaterial> COMPRESSED_GOLD;
-    public static Holder<ArmorMaterial> COMPRESSED_DIAMOND;
-    public static Holder<ArmorMaterial> COMPRESSED_NETHERITE;
+    public static final ArmorMaterial COMPRESSED_IRON = new ArmorMaterial(
+        IRON_DUR, defenseMap(3, 7, 6, 3), 11,
+        SoundEvents.ARMOR_EQUIP_IRON, 1.0f, 0.0f,
+        ItemTags.REPAIRS_IRON_ARMOR,
+        ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compressed_iron")
+    );
 
-    public static void register() {
-        COMPRESSED_IRON = Registry.registerForHolder(BuiltInRegistries.ARMOR_MATERIAL,
-            ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compressed_iron"),
-            new ArmorMaterial(defenseMap(3, 7, 6, 3), 11,
-                SoundEvents.ARMOR_EQUIP_IRON,
-                () -> Ingredient.of(UCItemRegistry.ALL_ITEMS.get("compressed_iron_ingot")),
-                List.of(new ArmorMaterial.Layer(
-                    ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compressed_iron"))),
-                1.0f, 0.0f));
+    public static final ArmorMaterial COMPRESSED_GOLD = new ArmorMaterial(
+        GOLD_DUR, defenseMap(3, 6, 4, 2), 27,
+        SoundEvents.ARMOR_EQUIP_GOLD, 0.0f, 0.0f,
+        ItemTags.REPAIRS_GOLD_ARMOR,
+        ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compressed_gold")
+    );
 
-        COMPRESSED_GOLD = Registry.registerForHolder(BuiltInRegistries.ARMOR_MATERIAL,
-            ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compressed_gold"),
-            new ArmorMaterial(defenseMap(3, 6, 4, 2), 27,
-                SoundEvents.ARMOR_EQUIP_GOLD,
-                () -> Ingredient.of(UCItemRegistry.ALL_ITEMS.get("compressed_gold_ingot")),
-                List.of(new ArmorMaterial.Layer(
-                    ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compressed_gold"))),
-                0.0f, 0.0f));
+    public static final ArmorMaterial COMPRESSED_DIAMOND = new ArmorMaterial(
+        DIAMOND_DUR, defenseMap(4, 8, 7, 4), 12,
+        SoundEvents.ARMOR_EQUIP_DIAMOND, 3.0f, 0.0f,
+        ItemTags.REPAIRS_DIAMOND_ARMOR,
+        ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compressed_diamond")
+    );
 
-        COMPRESSED_DIAMOND = Registry.registerForHolder(BuiltInRegistries.ARMOR_MATERIAL,
-            ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compressed_diamond"),
-            new ArmorMaterial(defenseMap(4, 8, 7, 4), 12,
-                SoundEvents.ARMOR_EQUIP_DIAMOND,
-                () -> Ingredient.of(UCItemRegistry.ALL_ITEMS.get("compressed_diamond")),
-                List.of(new ArmorMaterial.Layer(
-                    ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compressed_diamond"))),
-                3.0f, 0.0f));
+    public static final ArmorMaterial COMPRESSED_NETHERITE = new ArmorMaterial(
+        NETHERITE_DUR, defenseMap(4, 9, 8, 4), 18,
+        SoundEvents.ARMOR_EQUIP_NETHERITE, 4.0f, 0.2f,
+        ItemTags.REPAIRS_NETHERITE_ARMOR,
+        ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compressed_netherite")
+    );
 
-        COMPRESSED_NETHERITE = Registry.registerForHolder(BuiltInRegistries.ARMOR_MATERIAL,
-            ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compressed_netherite"),
-            new ArmorMaterial(defenseMap(4, 9, 8, 4), 18,
-                SoundEvents.ARMOR_EQUIP_NETHERITE,
-                () -> Ingredient.of(UCItemRegistry.ALL_ITEMS.get("compressed_netherite_ingot")),
-                List.of(new ArmorMaterial.Layer(
-                    ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compressed_netherite"))),
-                4.0f, 0.2f));
-    }
+    // No register() method needed — ArmorMaterial is no longer a registry object
 
-    public static int getDurability(Holder<ArmorMaterial> material, ArmorItem.Type type) {
-        if (material == COMPRESSED_IRON)      return type.getDurability(IRON_DUR);
-        if (material == COMPRESSED_GOLD)      return type.getDurability(GOLD_DUR);
-        if (material == COMPRESSED_DIAMOND)   return type.getDurability(DIAMOND_DUR);
-        if (material == COMPRESSED_NETHERITE) return type.getDurability(NETHERITE_DUR);
-        return 100;
-    }
-
-    private static Map<ArmorItem.Type, Integer> defenseMap(
+    private static Map<ArmorType, Integer> defenseMap(
             int helmet, int chestplate, int leggings, int boots) {
-        Map<ArmorItem.Type, Integer> map = new EnumMap<>(ArmorItem.Type.class);
-        map.put(ArmorItem.Type.HELMET,     helmet);
-        map.put(ArmorItem.Type.CHESTPLATE, chestplate);
-        map.put(ArmorItem.Type.LEGGINGS,   leggings);
-        map.put(ArmorItem.Type.BOOTS,      boots);
+        Map<ArmorType, Integer> map = new EnumMap<>(ArmorType.class);
+        map.put(ArmorType.HELMET,     helmet);
+        map.put(ArmorType.CHESTPLATE, chestplate);
+        map.put(ArmorType.LEGGINGS,   leggings);
+        map.put(ArmorType.BOOTS,      boots);
         return map;
     }
 }

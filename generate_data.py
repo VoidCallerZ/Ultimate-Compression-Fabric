@@ -352,7 +352,7 @@ def make_standard_compress(input_id: str, output_id: str) -> dict:
     return {
         "type": "minecraft:crafting_shaped",
         "pattern": ["###", "###", "###"],
-        "key": { "#": { "item": input_id } },
+        "key": { "#": input_id },
         "result": { "id": output_id, "count": 1 }
     }
 
@@ -362,8 +362,8 @@ def make_compressor_compress(input_id: str, output_id: str) -> dict:
         "type": "minecraft:crafting_shaped",
         "pattern": ["###", "#C#", "###"],
         "key": {
-            "#": { "item": input_id },
-            "C": { "item": COMPRESSOR_ID }
+            "#": input_id,
+            "C": COMPRESSOR_ID
         },
         "result": { "id": output_id, "count": 1 }
     }
@@ -372,7 +372,7 @@ def make_compressor_compress(input_id: str, output_id: str) -> dict:
 def make_decompress(input_id: str, output_id: str, count: int = 9) -> dict:
     return {
         "type": "minecraft:crafting_shapeless",
-        "ingredients": [{ "item": input_id }],
+        "ingredients": [ input_id ],
         "result": { "id": output_id, "count": count }
     }
 
@@ -382,8 +382,8 @@ def make_compressor_recipe() -> dict:
         "type": "minecraft:crafting_shaped",
         "pattern": ["RRR", "RIR", "RRR"],
         "key": {
-            "R": { "item": "minecraft:redstone" },
-            "I": { "item": "minecraft:iron_ingot" }
+            "R": "minecraft:redstone",
+            "I": "minecraft:iron_ingot"
         },
         "result": { "id": COMPRESSOR_ID, "count": 1 }
     }
@@ -605,9 +605,9 @@ def generate_equipment_recipes(resource_path: Path) -> int:
             name    = f"compressed_{mat}_{tool}"
             pattern = TOOL_PATTERNS[tool]
             # Build key — tools use # for material and S for stick
-            key = {"#": {"item": mat_id}}
+            key = {"#": mat_id}
             if any("S" in row for row in pattern):
-                key["S"] = {"item": stick_id}
+                key["S"] = stick_id
             write_json(out_base / f"{name}.json", {
                 "type": "minecraft:crafting_shaped",
                 "pattern": pattern,
@@ -624,7 +624,7 @@ def generate_equipment_recipes(resource_path: Path) -> int:
             write_json(out_base / f"{name}.json", {
                 "type": "minecraft:crafting_shaped",
                 "pattern": pattern,
-                "key": {"#": {"item": mat_id}},
+                "key": {"#": mat_id},
                 "result": {"id": f"{MOD_ID}:{name}", "count": 1}
             })
             count += 1

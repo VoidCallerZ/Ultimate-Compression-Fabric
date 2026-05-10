@@ -5,6 +5,8 @@ import com.voidcallerz.uc.UCFallingBlock;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -193,26 +195,31 @@ public class UCBlocks {
             SoundType sound     = (SoundType) mat[2];
             float     hardness  = (float)     mat[3];
             float     resistance= (float)     mat[4];
-
+    
             boolean isLog     = LOG_MATERIALS.contains(baseName);
             boolean isFalling = FALLING_MATERIALS.contains(baseName);
             boolean needsTool = !NO_TOOL_REQUIRED.contains(baseName);
 
             for (int tier = 0; tier < ModConstants.TIER_COUNT; tier++) {
-                String registryName  = ModConstants.TIER_PREFIXES[tier] + "_" + baseName;
-                float  tierMult      = (float) Math.pow(2, tier);
+                String registryName = ModConstants.TIER_PREFIXES[tier] + "_" + baseName;
+                float  tierMult     = (float) Math.pow(2, tier);
+
+                // In 1.21.2, setId() must be called on properties before block construction
+                ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK,
+                    ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, registryName));
 
                 BlockBehaviour.Properties props = BlockBehaviour.Properties.of()
                     .mapColor(color).sound(sound)
-                    .strength(hardness * tierMult, resistance * tierMult);
+                    .strength(hardness * tierMult, resistance * tierMult)
+                    .setId(key);
 
                 if (needsTool) props = props.requiresCorrectToolForDrops();
 
                 final BlockBehaviour.Properties finalProps = props;
                 Block block;
-                if (isLog)     block = new RotatedPillarBlock(finalProps);
-                else if (isFalling) block = new UCFallingBlock(finalProps) {};
-                else           block = new Block(finalProps);
+                if (isLog)          block = new RotatedPillarBlock(finalProps);
+                else if (isFalling) block = new UCFallingBlock(finalProps);
+                else                block = new Block(finalProps);
 
                 Registry.register(BuiltInRegistries.BLOCK,
                     ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, registryName),
