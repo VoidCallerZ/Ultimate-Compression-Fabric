@@ -72,7 +72,7 @@ ORES = [
         "vanilla_drop":     "raw_gold",
         "compressed_drop":  "compressed_raw_gold",
         "fortune_bonus":    True,
-        "vein_size":        2,
+        "vein_size":        3,
         "veins_per_chunk":  1,
         "min_y":            -64,
         "max_y":            -32,
@@ -94,7 +94,7 @@ ORES = [
         "vanilla_drop":     "diamond",
         "compressed_drop":  "compressed_diamond",
         "fortune_bonus":    True,
-        "vein_size":        1,
+        "vein_size":        3,
         "veins_per_chunk":  1,
         "min_y":            -64,
         "max_y":            -48,
@@ -105,7 +105,7 @@ ORES = [
         "vanilla_drop":     "emerald",
         "compressed_drop":  "compressed_emerald",
         "fortune_bonus":    True,
-        "vein_size":        1,
+        "vein_size":        3,
         "veins_per_chunk":  1,
         "min_y":            -64,
         "max_y":            -32,
@@ -116,7 +116,7 @@ ORES = [
         "vanilla_drop":     "lapis_lazuli",
         "compressed_drop":  "compressed_lapis",
         "fortune_bonus":    True,
-        "vein_size":        2,
+        "vein_size":        3,
         "veins_per_chunk":  1,
         "min_y":            -64,
         "max_y":            -32,
@@ -127,7 +127,7 @@ ORES = [
         "vanilla_drop":     "redstone",
         "compressed_drop":  "compressed_redstone",
         "fortune_bonus":    True,
-        "vein_size":        2,
+        "vein_size":        3,
         "veins_per_chunk":  2,
         "min_y":            -64,
         "max_y":            -32,
@@ -468,7 +468,7 @@ def update_lang(resource_path: Path) -> int:
 
     count = 0
     for ore in ORES:
-        key = f"block.{MOD_ID}.{ore['name']}"
+        key = f"item.{MOD_ID}.{ore['name']}"
         if key not in entries:
             entries[key] = ore["display"]
             count += 1
