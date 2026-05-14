@@ -305,5 +305,15 @@
     "block.uc.compressed_moss_block": "Compressed Moss Block",
     "block.uc.double_compressed_moss_block": "Double Compressed Moss Block",
     "block.uc.compressed_end_stone": "Compressed End Stone",
-    "block.uc.double_compressed_end_stone": "Double Compressed End Stone"
+    "block.uc.double_compressed_end_stone": "Double Compressed End Stone",
+    "item.uc.compressed_coal_ore": "Compressed Coal Ore",
+    "item.uc.compressed_iron_ore": "Compressed Iron Ore",
+    "item.uc.compressed_gold_ore": "Compressed Gold Ore",
+    "item.uc.compressed_copper_ore": "Compressed Copper Ore",
+    "item.uc.compressed_diamond_ore": "Compressed Diamond Ore",
+    "item.uc.compressed_emerald_ore": "Compressed Emerald Ore",
+    "item.uc.compressed_lapis_ore": "Compressed Lapis Ore",
+    "item.uc.compressed_redstone_ore": "Compressed Redstone Ore",
+    "item.uc.compressed_nether_quartz_ore": "Compressed Nether Quartz Ore",
+    "item.uc.compressed_nether_gold_ore": "Compressed Nether Gold Ore"
 }

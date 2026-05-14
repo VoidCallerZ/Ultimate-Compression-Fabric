@@ -1,0 +1,9 @@
+xcopy "F:\Minecraft Mods\Fabric\UC 1.21.x Fabric" "F:\Minecraft Mods\Fabric\UC 1.21.x Fabric" /E /I /H
+cd "F:\Minecraft Mods\Fabric\UC 1.21.x Fabric"
+git checkout -b 1.21.x
+.\gradlew --stop
+Remove .gradle folder
+Update fabric.mod.json, gradle-wrapper.properties, build.gradle, gradle.properties, settings.gradle
+.\gradlew --refresh-dependencies
+.\gradlew runClient
+Ctrl + Shift + P: Java: Clean Java Language Server Workspace

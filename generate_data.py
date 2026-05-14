@@ -28,6 +28,13 @@ import json
 from pathlib import Path
 
 # =============================================================================
+# VERSION FLAG
+# Set to "1.21.4" for 1.21.4+ (uses assets/<mod>/items/ client item JSONs)
+# Set to "1.21.1" for 1.21.1/1.21.2/1.21.3 (uses assets/<mod>/models/item/)
+# =============================================================================
+MC_VERSION = "1.21.4"  # Change to "1.21.4" for 1.21.4+
+
+# =============================================================================
 # CONFIGURATION
 # =============================================================================
 
@@ -41,7 +48,7 @@ STANDARD_MATERIALS = [
     # Vanilla blocks
     "stone", "cobblestone", "dirt", "sand", "gravel",
     "netherrack", "soul_sand", "soul_soil", "blackstone", "deepslate",
-    "calcite", "tuff", "obsidian", "basalt", "glowstone", "magma_block",
+    "calcite", "tuff", "obsidian", "basalt", "glowstone", "magma_block", 
     "quartz_block",
     # Stone variants
     "andesite", "diorite", "granite", "cobbled_deepslate",
@@ -73,8 +80,8 @@ STANDARD_MATERIALS = [
     "magenta_concrete", "brown_concrete", "light_blue_concrete", "lime_concrete",
     # Misc
     "red_sand",
-    # Natural Blocks
-    "sandstone", "red_sandstone", "ice", "packed_ice", "blue_ice", "clay",
+    # Natural blocks
+    "sandstone", "red_sandstone", "ice", "packed_ice", "blue_ice", "clay", 
     "snow_block", "moss_block", "end_stone",
 ]
 
@@ -167,7 +174,8 @@ NO_TOOL_MATS = {
     "purple_concrete_powder", "orange_concrete_powder", "cyan_concrete_powder",
     "light_gray_concrete_powder", "gray_concrete_powder", "pink_concrete_powder",
     "magenta_concrete_powder", "brown_concrete_powder", "light_blue_concrete_powder",
-    "lime_concrete_powder",
+    "lime_concrete_powder", "ice", "packed_ice", "blue_ice", "clay", 
+    "snow_block", "moss_block",
 }
 
 # Everything else that needs a tool defaults to needs_stone_tool:
@@ -315,33 +323,46 @@ def generate_block_models(resource_path: Path) -> int:
 # =============================================================================
 
 def generate_item_models_blocks(resource_path: Path) -> int:
-    out_base = resource_path / "assets" / MOD_ID / "models" / "item"
+    # Always write the model JSON (needed by both old and new systems)
+    model_base = resource_path / "assets" / MOD_ID / "models" / "item"
     count = 0
     for material in ALL_MATERIALS:
         for tier_index in range(len(TIER_PREFIXES)):
             name = registry_name(material, tier_index)
-            write_json(out_base / f"{name}.json", {
+            write_json(model_base / f"{name}.json", {
                 "parent": f"{MOD_ID}:block/{name}"
             })
+            if MC_VERSION == "1.21.4":
+                # 1.21.4+ also needs assets/<mod>/items/<name>.json
+                items_base = resource_path / "assets" / MOD_ID / "items"
+                write_json(items_base / f"{name}.json", {
+                    "model": {
+                        "type": "minecraft:model",
+                        "model": f"{MOD_ID}:block/{name}"
+                    }
+                })
             count += 1
     return count
 
 
 def generate_item_models_standalone(resource_path: Path) -> int:
-    out_base = resource_path / "assets" / MOD_ID / "models" / "item"
+    model_base = resource_path / "assets" / MOD_ID / "models" / "item"
     count = 0
-    for entry in COMPRESSED_ITEMS:
-        name = entry["name"]
-        write_json(out_base / f"{name}.json", {
+    all_items = [e["name"] for e in COMPRESSED_ITEMS] + ["compression_catalyst"]
+    for name in all_items:
+        write_json(model_base / f"{name}.json", {
             "parent": "minecraft:item/generated",
             "textures": { "layer0": f"{MOD_ID}:item/{name}" }
         })
+        if MC_VERSION == "1.21.4":
+            items_base = resource_path / "assets" / MOD_ID / "items"
+            write_json(items_base / f"{name}.json", {
+                "model": {
+                    "type": "minecraft:model",
+                    "model": f"{MOD_ID}:item/{name}"
+                }
+            })
         count += 1
-    write_json(out_base / "compression_catalyst.json", {
-        "parent": "minecraft:item/generated",
-        "textures": { "layer0": f"{MOD_ID}:item/compression_catalyst" }
-    })
-    count += 1
     return count
 
 # =============================================================================
@@ -633,23 +654,40 @@ def generate_equipment_recipes(resource_path: Path) -> int:
 
 
 def generate_equipment_item_models(resource_path: Path) -> int:
-    out_base = resource_path / "assets" / MOD_ID / "models" / "item"
+    model_base = resource_path / "assets" / MOD_ID / "models" / "item"
     count = 0
     for mat, _ in EQUIPMENT_MATERIALS_TOOLS:
         for tool, _ in TOOL_TYPES:
             name = f"compressed_{mat}_{tool}"
-            write_json(out_base / f"{name}.json", {
-                "parent": "minecraft:item/handheld",
+            parent = "minecraft:item/handheld"
+            write_json(model_base / f"{name}.json", {
+                "parent": parent,
                 "textures": {"layer0": f"{MOD_ID}:item/{name}"}
             })
+            if MC_VERSION == "1.21.4":
+                items_base = resource_path / "assets" / MOD_ID / "items"
+                write_json(items_base / f"{name}.json", {
+                    "model": {
+                        "type": "minecraft:model",
+                        "model": f"{MOD_ID}:item/{name}"
+                    }
+                })
             count += 1
     for mat, _ in EQUIPMENT_MATERIALS_ARMOR:
         for piece, _ in ARMOR_TYPES:
             name = f"compressed_{mat}_{piece}"
-            write_json(out_base / f"{name}.json", {
+            write_json(model_base / f"{name}.json", {
                 "parent": "minecraft:item/generated",
                 "textures": {"layer0": f"{MOD_ID}:item/{name}"}
             })
+            if MC_VERSION == "1.21.4":
+                items_base = resource_path / "assets" / MOD_ID / "items"
+                write_json(items_base / f"{name}.json", {
+                    "model": {
+                        "type": "minecraft:model",
+                        "model": f"{MOD_ID}:item/{name}"
+                    }
+                })
             count += 1
     return count
 
