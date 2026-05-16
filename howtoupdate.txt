@@ -1,4 +1,4 @@
-xcopy "F:\Minecraft Mods\Fabric\UC 1.21.x Fabric" "F:\Minecraft Mods\Fabric\UC 1.21.x Fabric" /E /I /H
+robocopy "F:\Minecraft Mods\Fabric\UC 1.21.x Fabric" "F:\Minecraft Mods\Fabric\UC 1.21.x Fabric" /E
 cd "F:\Minecraft Mods\Fabric\UC 1.21.x Fabric"
 git checkout -b 1.21.x
 .\gradlew --stop
