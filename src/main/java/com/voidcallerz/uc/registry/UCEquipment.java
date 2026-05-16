@@ -35,8 +35,10 @@ public class UCEquipment {
             String       pre      = "compressed_" + mat;
             final float fd = axeDmg, fs = axeSpd;
 
-            reg(pre + "_sword",   name -> new SwordItem(material, 3, -2.4f,     props(name)));
-            reg(pre + "_pickaxe", name -> new PickaxeItem(material, 1, -2.8f,   props(name)));
+            // In 1.21.5, SwordItem/PickaxeItem/AxeItem/ShovelItem/HoeItem/ArmorItem removed
+            // Use Item with props method instead
+            reg(pre + "_sword",   name -> new Item(props(name).sword(material, 3, -2.4f)));
+            reg(pre + "_pickaxe", name -> new Item(props(name).pickaxe(material, 1, -2.8f)));
             reg(pre + "_axe",     name -> new AxeItem(material, fd, fs,         props(name)));
             reg(pre + "_shovel",  name -> new ShovelItem(material, 1.5f, -3.0f, props(name)));
             reg(pre + "_hoe",     name -> new HoeItem(material, 0, -3.0f,       props(name)));
@@ -54,7 +56,7 @@ public class UCEquipment {
                 ArmorType.HELMET, ArmorType.CHESTPLATE,
                 ArmorType.LEGGINGS, ArmorType.BOOTS}) {
             String name = pre + "_" + type.getName();
-            reg(name, n -> new ArmorItem(material, type, props(n)));
+            reg(name, n -> new Item(props(n).humanoidArmor(material, type)));
         }
     }
 
