@@ -4,8 +4,8 @@ import com.voidcallerz.uc.ModConstants;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 import java.util.LinkedHashMap;
@@ -47,20 +47,20 @@ public class UCItemRegistry {
         // craftRemainder self-reference causes issues in 1.21.2
         // remainingItems in recipe JSON handles staying in grid instead
         ResourceKey<Item> catalystKey = ResourceKey.create(Registries.ITEM,
-            ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compression_catalyst"));
+            Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, "compression_catalyst"));
         COMPRESSION_CATALYST = new Item(new Item.Properties().stacksTo(1).setId(catalystKey));
         Registry.register(BuiltInRegistries.ITEM,
-            ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compression_catalyst"),
+            Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, "compression_catalyst"),
             COMPRESSION_CATALYST);
 
         // Standalone compressed items
         for (Object[] entry : ITEMS_LIST) {
             String name = (String) entry[0];
             ResourceKey<Item> key = ResourceKey.create(Registries.ITEM,
-                ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name));
+                Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, name));
             Item item = new Item(new Item.Properties().setId(key));
             Registry.register(BuiltInRegistries.ITEM,
-                ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name), item);
+                Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, name), item);
             ALL_ITEMS.put(name, item);
         }
     }

@@ -4,8 +4,8 @@ import com.voidcallerz.uc.ModConstants;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -36,7 +36,7 @@ public class UCOreGen {
         for (String name : OVERWORLD_ORES) {
             ResourceKey<PlacedFeature> key = ResourceKey.create(
                 Registries.PLACED_FEATURE,
-                ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name));
+                Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, name));
             BiomeModifications.addFeature(
                 BiomeSelectors.tag(BiomeTags.IS_OVERWORLD),
                 GenerationStep.Decoration.UNDERGROUND_ORES,
@@ -45,7 +45,7 @@ public class UCOreGen {
         for (String name : NETHER_ORES) {
             ResourceKey<PlacedFeature> key = ResourceKey.create(
                 Registries.PLACED_FEATURE,
-                ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name));
+                Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, name));
             BiomeModifications.addFeature(
                 BiomeSelectors.tag(BiomeTags.IS_NETHER),
                 GenerationStep.Decoration.UNDERGROUND_ORES,

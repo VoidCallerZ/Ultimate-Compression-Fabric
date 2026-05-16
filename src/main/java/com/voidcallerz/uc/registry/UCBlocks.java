@@ -6,8 +6,8 @@ import com.voidcallerz.uc.UCFallingBlock;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -206,7 +206,7 @@ public class UCBlocks {
 
                 // In 1.21.2, setId() must be called on properties before block construction
                 ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK,
-                    ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, registryName));
+                    Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, registryName));
 
                 BlockBehaviour.Properties props = BlockBehaviour.Properties.of()
                     .mapColor(color).sound(sound)
@@ -222,7 +222,7 @@ public class UCBlocks {
                 else                block = new Block(finalProps);
 
                 Registry.register(BuiltInRegistries.BLOCK,
-                    ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, registryName),
+                    Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, registryName),
                     block);
                 ALL_BLOCKS.put(registryName, block);
             }

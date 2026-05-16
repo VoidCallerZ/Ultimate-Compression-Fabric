@@ -3,7 +3,6 @@ package com.voidcallerz.uc.registry;
 import com.voidcallerz.uc.ModConstants;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -13,6 +12,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 
 import java.util.LinkedHashMap;
@@ -45,7 +45,7 @@ public class UCOres {
             boolean isNether = name.contains("nether");
 
             ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK,
-                ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name));
+                Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, name));
 
             BlockBehaviour.Properties props = isNether
                 ? BlockBehaviour.Properties.of()
@@ -62,15 +62,15 @@ public class UCOres {
                 : new DropExperienceBlock(UniformInt.of(xpMin, xpMax), props);
 
             Registry.register(BuiltInRegistries.BLOCK,
-                ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name), block);
+                Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, name), block);
             ALL_ORE_BLOCKS.put(name, block);
 
             // BlockItem also needs setId() in 1.21.2
             ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM,
-                ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name));
+                Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, name));
             BlockItem item = new BlockItem(block, new Item.Properties().setId(itemKey));
             Registry.register(BuiltInRegistries.ITEM,
-                ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name), item);
+                Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, name), item);
         }
     }
 }

@@ -4,8 +4,8 @@ import com.voidcallerz.uc.ModConstants;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -23,7 +23,7 @@ public class UCItems {
             Block  block = entry.getValue();
 
             ResourceKey<Item> key = ResourceKey.create(Registries.ITEM,
-                ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name));
+                Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, name));
 
             // In 1.21.2, BlockItem.getDescriptionId() uses the item's setId key
             // which gives "item.uc.x" instead of "block.uc.x".
@@ -33,7 +33,7 @@ public class UCItems {
                     .setId(key)
                     .overrideDescription(block.getDescriptionId()));
             Registry.register(BuiltInRegistries.ITEM,
-                ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name), item);
+                Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, name), item);
             ALL_ITEMS.put(name, item);
         }
     }

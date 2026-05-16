@@ -4,8 +4,8 @@ import com.voidcallerz.uc.ModConstants;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
@@ -62,14 +62,14 @@ public class UCEquipment {
 
     private static Item.Properties props(String name) {
         ResourceKey<Item> key = ResourceKey.create(Registries.ITEM,
-            ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name));
+            Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, name));
         return new Item.Properties().setId(key);
     }
 
     private static void reg(String name, java.util.function.Function<String, Item> factory) {
         Item item = factory.apply(name);
         Registry.register(BuiltInRegistries.ITEM,
-            ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, name), item);
+            Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, name), item);
         ALL_EQUIPMENT.put(name, item);
     }
 }
