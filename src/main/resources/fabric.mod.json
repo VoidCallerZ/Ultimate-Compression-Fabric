@@ -17,6 +17,9 @@
 	"entrypoints": {
 		"main": [
 			"com.voidcallerz.uc.UltimateCompression"
+		],
+		"client": [
+			"com.voidcallerz.uc.UltimateCompressionClient"
 		]
 	},
 	"mixins": [],
