@@ -25,7 +25,7 @@ public class UCBlocks {
     private static final Set<String> LOG_MATERIALS = Set.of(
         "oak_log", "spruce_log", "birch_log", "jungle_log", "acacia_log",
         "dark_oak_log", "mangrove_log", "cherry_log", "bamboo_block",
-        "crimson_stem", "warped_stem", "basalt"
+        "crimson_stem", "warped_stem", "basalt", "pale_oak_log"
     );
 
     private static final Set<String> FALLING_MATERIALS = Set.of(
@@ -54,6 +54,12 @@ public class UCBlocks {
         "magenta_concrete_powder", "brown_concrete_powder", "light_blue_concrete_powder",
         "lime_concrete_powder", "red_sand", "glowstone", "ice", "packed_ice", 
         "blue_ice", "clay", "snow_block", "moss_block"
+    );
+
+    public static final Set<String> LEAVES_MATERIALS = Set.of(
+        "oak_leaves", "spruce_leaves", "birch_leaves", "jungle_leaves", "acacia_leaves",
+        "dark_oak_leaves", "mangrove_leaves", "cherry_leaves", "pale_oak_leaves",
+        "azalea_leaves", "flowering_azalea_leaves"
     );
 
     private static final Object[][] MATERIALS = {
@@ -185,7 +191,26 @@ public class UCBlocks {
         { "clay",          MapColor.CLAY,          SoundType.GRAVEL,   0.6f,  4.0f },
         { "snow_block",    MapColor.SNOW,          SoundType.SNOW,     0.2f,  0.5f },
         { "moss_block",    MapColor.COLOR_GREEN,   SoundType.GRASS,    0.8f,  4.0f },
-        { "end_stone",     MapColor.SAND,          SoundType.STONE,    0.8f,  4.0f },
+        { "end_stone",       MapColor.SAND,          SoundType.STONE,    0.8f,  4.0f },
+
+        // --- Pale Garden blocks ---
+        { "pale_oak_log",    MapColor.TERRACOTTA_WHITE, SoundType.WOOD,    2.0f,  2.0f },
+        { "pale_oak_planks", MapColor.TERRACOTTA_WHITE, SoundType.WOOD,    2.0f,  3.0f },
+        { "pale_moss_block", MapColor.TERRACOTTA_WHITE, SoundType.MOSS,    0.1f,  0.1f },
+        { "resin_block",     MapColor.COLOR_ORANGE,  SoundType.RESIN,    1.5f,  6.0f },
+
+        // --- Leaves ---
+        { "oak_leaves",      MapColor.PLANT,         SoundType.GRASS,    0.2f,  0.2f },
+        { "spruce_leaves",   MapColor.PLANT,         SoundType.GRASS,    0.2f,  0.2f },
+        { "birch_leaves",    MapColor.PLANT,         SoundType.GRASS,    0.2f,  0.2f },
+        { "jungle_leaves",   MapColor.PLANT,         SoundType.GRASS,    0.2f,  0.2f },
+        { "acacia_leaves",   MapColor.PLANT,         SoundType.GRASS,    0.2f,  0.2f },
+        { "dark_oak_leaves", MapColor.PLANT,         SoundType.GRASS,    0.2f,  0.2f },
+        { "mangrove_leaves", MapColor.PLANT,         SoundType.GRASS,    0.2f,  0.2f },
+        { "cherry_leaves",   MapColor.COLOR_PINK,    SoundType.CHERRY_LEAVES, 0.2f, 0.2f },
+        { "pale_oak_leaves", MapColor.TERRACOTTA_WHITE, SoundType.GRASS,  0.2f,  0.2f },
+        { "azalea_leaves",   MapColor.PLANT,         SoundType.GRASS,    0.2f,  0.2f },
+        { "flowering_azalea_leaves", MapColor.PLANT, SoundType.AZALEA_LEAVES, 0.2f, 0.2f },
     };
 
     public static void register() {
@@ -198,6 +223,7 @@ public class UCBlocks {
     
             boolean isLog     = LOG_MATERIALS.contains(baseName);
             boolean isFalling = FALLING_MATERIALS.contains(baseName);
+            boolean isLeaves  = LEAVES_MATERIALS.contains(baseName);
             boolean needsTool = !NO_TOOL_REQUIRED.contains(baseName);
 
             for (int tier = 0; tier < ModConstants.TIER_COUNT; tier++) {
@@ -214,6 +240,7 @@ public class UCBlocks {
                     .setId(key);
 
                 if (needsTool) props = props.requiresCorrectToolForDrops();
+                if (isLeaves) props = props.noOcclusion().isSuffocating((s, r, p) -> false).isViewBlocking((s, r, p) -> false);
 
                 final BlockBehaviour.Properties finalProps = props;
                 Block block;
