@@ -20,6 +20,7 @@ public class UCEquipment {
     private static final Object[][] TOOL_TIERS = {
         { "wood",      UCToolTiers.COMPRESSED_WOOD,      5.0f, -3.2f },
         { "stone",     UCToolTiers.COMPRESSED_STONE,     6.0f, -3.2f },
+        { "copper",    UCToolTiers.COMPRESSED_COPPER,    5.0f, -3.1f },
         { "iron",      UCToolTiers.COMPRESSED_IRON,      7.0f, -3.1f },
         { "gold",      UCToolTiers.COMPRESSED_GOLD,      5.0f, -3.2f },
         { "diamond",   UCToolTiers.COMPRESSED_DIAMOND,   8.0f, -3.0f },
@@ -44,6 +45,7 @@ public class UCEquipment {
             reg(pre + "_hoe",     name -> new HoeItem(material, 0, -3.0f,       props(name)));
         }
 
+        armorSet("copper",    UCArmorMaterials.COMPRESSED_COPPER);
         armorSet("iron",      UCArmorMaterials.COMPRESSED_IRON);
         armorSet("gold",      UCArmorMaterials.COMPRESSED_GOLD);
         armorSet("diamond",   UCArmorMaterials.COMPRESSED_DIAMOND);
