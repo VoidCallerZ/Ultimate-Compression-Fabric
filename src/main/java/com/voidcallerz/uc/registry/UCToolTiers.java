@@ -18,6 +18,12 @@ public class UCToolTiers {
         ItemTags.STONE_TOOL_MATERIALS
     );
 
+    public static final ToolMaterial COMPRESSED_COPPER = new ToolMaterial(
+        BlockTags.INCORRECT_FOR_COPPER_TOOL,
+        1710, 5.5f, 1.5f, 13,
+        ItemTags.REPAIRS_COPPER_ARMOR
+    );
+
     public static final ToolMaterial COMPRESSED_IRON = new ToolMaterial(
         BlockTags.INCORRECT_FOR_IRON_TOOL,
         2250, 6.5f, 2.5f, 14,
