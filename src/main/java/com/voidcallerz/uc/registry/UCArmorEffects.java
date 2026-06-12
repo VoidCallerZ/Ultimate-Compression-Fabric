@@ -22,6 +22,9 @@ public class UCArmorEffects {
     private record ArmorSet(String prefix, List<MobEffectInstance> effects) {}
 
     private static final List<ArmorSet> ARMOR_SETS = List.of(
+        new ArmorSet("compressed_copper", List.of(
+            effect(MobEffects.RESISTANCE, 0)
+        )),
         new ArmorSet("compressed_iron", List.of(
             effect(MobEffects.STRENGTH, 0)
         )),

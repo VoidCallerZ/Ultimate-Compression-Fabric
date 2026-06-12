@@ -36,6 +36,7 @@ public class UCItemRegistry {
         { "compressed_bone",            0 },
         { "compressed_string",          0 },
         { "compressed_feather",         0 },
+        { "compressed_copper_nugget",   0 },
         { "compressed_iron_nugget",     0 },
         { "compressed_gold_nugget",     0 },
         { "compressed_coal",            14400 },
