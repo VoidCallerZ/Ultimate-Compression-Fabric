@@ -1,18 +1,23 @@
 package com.voidcallerz.uc.registry;
 
 import com.voidcallerz.uc.ModConstants;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
 public class UCCreativeTabs {
 
     public static void register() {
-        CreativeModeTab tab = FabricItemGroup.builder()
+        ResourceKey<CreativeModeTab> key = ResourceKey.create(
+            BuiltInRegistries.CREATIVE_MODE_TAB.key(),
+            Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, "uc_tab")
+        );
+
+        CreativeModeTab tab = CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
             .title(Component.translatable("itemGroup.uc"))
             .icon(() -> UCBlocks.ALL_BLOCKS.values().stream()
                 .findFirst()
@@ -27,7 +32,6 @@ public class UCCreativeTabs {
             })
             .build();
 
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,
-            Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, "uc_tab"), tab);
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, key, tab);
     }
 }
