@@ -211,6 +211,11 @@ public class UCBlocks {
         { "pale_oak_leaves", MapColor.TERRACOTTA_WHITE, SoundType.GRASS,  0.2f,  0.2f },
         { "azalea_leaves",   MapColor.PLANT,         SoundType.GRASS,    0.2f,  0.2f },
         { "flowering_azalea_leaves", MapColor.PLANT, SoundType.AZALEA_LEAVES, 0.2f, 0.2f },
+
+        // --- New in 26.2 ---
+        { "cinnabar", MapColor.COLOR_RED, SoundType.STONE, 1.5f, 6.0f },
+        { "sulfur", MapColor.COLOR_YELLOW, SoundType.STONE, 1.5f, 6.0f },
+        { "potent_sulfur", MapColor.GOLD, SoundType.STONE, 1.5f, 6.0f },
     };
 
     public static void register() {
