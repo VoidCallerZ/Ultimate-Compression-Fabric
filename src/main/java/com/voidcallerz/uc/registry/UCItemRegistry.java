@@ -5,6 +5,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -41,19 +42,12 @@ public class UCItemRegistry {
     };
 
     public static void register() {
-        // Compression catalyst — stays in grid after crafting
-        // craftRemainder(item) makes the item stay in the crafting grid.
-        // We need a self-reference so we register a placeholder first,
-        // then register the real item pointing to itself as the remainder.
-        Item placeholder = new Item(new Item.Properties().stacksTo(1));
-        Registry.register(BuiltInRegistries.ITEM,
-            ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compression_catalyst"),
-            placeholder);
-
-        // Now create the real catalyst referencing the placeholder as its remainder
-        // (placeholder and catalyst share the same registry slot — same item in practice)
-        COMPRESSION_CATALYST = new Item(new Item.Properties().stacksTo(1).craftRemainder(placeholder));
-        // Re-register under the same key to replace the placeholder
+        COMPRESSION_CATALYST = new Item(new Item.Properties().stacksTo(1)) {
+            @Override
+            public ItemStack getRecipeRemainder(ItemStack stack) {
+                return stack.copy();
+            }
+        };
         Registry.register(BuiltInRegistries.ITEM,
             ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compression_catalyst"),
             COMPRESSION_CATALYST);
