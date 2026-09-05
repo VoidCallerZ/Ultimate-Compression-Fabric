@@ -7,6 +7,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class UCItemRegistry {
         { "compressed_lapis",           0 },
         { "compressed_redstone",        0 },
         { "compressed_flint",           0 },
-        { "compressed_stick",           0 },
+        { "compressed_stick",           900 },
         { "compressed_leather",         0 },
         { "compressed_bone",            0 },
         { "compressed_string",          0 },
@@ -44,12 +45,21 @@ public class UCItemRegistry {
     };
 
     public static void register() {
-        // Compression catalyst — plain stacksTo(1) item
-        // craftRemainder self-reference causes issues in 1.21.2
-        // remainingItems in recipe JSON handles staying in grid instead
+        // Compression catalyst — stays in the grid after crafting.
+        //
+        // Vanilla's getCraftingRemainingItem() is final and reads the
+        // craftRemainder property, which cannot reference the item being built.
+        // Fabric API's FabricItem#getRecipeRemainder(ItemStack) is the
+        // stack-aware equivalent and IS overridable, so the self-reference
+        // works here. Returns a copy — never the grid's own stack.
         ResourceKey<Item> catalystKey = ResourceKey.create(Registries.ITEM,
             ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compression_catalyst"));
-        COMPRESSION_CATALYST = new Item(new Item.Properties().stacksTo(1).setId(catalystKey));
+        COMPRESSION_CATALYST = new Item(new Item.Properties().stacksTo(1).setId(catalystKey)) {
+            @Override
+            public ItemStack getRecipeRemainder(ItemStack stack) {
+                return stack.copy();
+            }
+        };
         Registry.register(BuiltInRegistries.ITEM,
             ResourceLocation.fromNamespaceAndPath(ModConstants.MOD_ID, "compression_catalyst"),
             COMPRESSION_CATALYST);
