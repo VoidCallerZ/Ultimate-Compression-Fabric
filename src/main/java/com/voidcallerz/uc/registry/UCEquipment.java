@@ -40,9 +40,9 @@ public class UCEquipment {
             // Use Item with props method instead
             reg(pre + "_sword",   name -> new Item(props(name).sword(material, 3, -2.4f)));
             reg(pre + "_pickaxe", name -> new Item(props(name).pickaxe(material, 1, -2.8f)));
-            reg(pre + "_axe",     name -> new AxeItem(material, fd, fs,         props(name)));
-            reg(pre + "_shovel",  name -> new ShovelItem(material, 1.5f, -3.0f, props(name)));
-            reg(pre + "_hoe",     name -> new HoeItem(material, 0, -3.0f,       props(name)));
+            reg(pre + "_axe",     name -> new Item(props(name).axe(material, fd, fs)));
+            reg(pre + "_shovel",  name -> new Item(props(name).shovel(material, 1.5f, -3.0f)));
+            reg(pre + "_hoe",     name -> new Item(props(name).hoe(material, 0, -3.0f)));
         }
 
         armorSet("copper",    UCArmorMaterials.COMPRESSED_COPPER);

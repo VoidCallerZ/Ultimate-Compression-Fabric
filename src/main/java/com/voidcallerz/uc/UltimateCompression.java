@@ -24,11 +24,9 @@ public class UltimateCompression implements ModInitializer {
         UCEquipment.register();
         // 6. Creative tab — references all of the above
         UCCreativeTabs.register();
-        // 7. Fuel handler — references items
-        UCFuelHandler.register();
-        // 8. Ore generation — injects placed features into overworld biomes
+        // 7. Ore generation — injects placed features into overworld biomes
         UCOreGen.register();
-        // 9. Armor effects — registers tick event callback
+        // 8. Armor effects — registers tick event callback
         UCArmorEffects.register();
 
         LOGGER.info("{} is loading — {} tiers, auto-registration active.",

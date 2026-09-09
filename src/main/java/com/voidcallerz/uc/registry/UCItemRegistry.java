@@ -2,6 +2,7 @@ package com.voidcallerz.uc.registry;
 
 import com.voidcallerz.uc.ModConstants;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
@@ -9,6 +10,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.component.CookingFuel;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ResolvableFloat;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,6 +21,23 @@ public class UCItemRegistry {
 
     public static final Map<String, Item> ALL_ITEMS = new LinkedHashMap<>();
     public static Item COMPRESSION_CATALYST;
+
+    /** Neutral smelting speed — fuel burns at the normal rate. */
+    public static final float DEFAULT_SPEED = 1.0f;
+
+    /**
+     * Builds a fixed-duration cooking fuel component.
+     *
+     * 26.3 removed the fuel registry entirely: burn times are now the
+     * minecraft:cooking_fuel data component, applied per item at construction.
+     * ResolvableInt/ResolvableFloat are sealed types — Constant is the fixed
+     * variant, Reference points at a registered number provider.
+     */
+    public static CookingFuel fuel(int burnTicks) {
+        return new CookingFuel(
+            new ResolvableInt.Constant(burnTicks),
+            new ResolvableFloat.Constant(DEFAULT_SPEED));
+    }
 
     private static final Object[][] ITEMS_LIST = {
         { "compressed_raw_iron",        0 },
@@ -71,7 +92,14 @@ public class UCItemRegistry {
             String name = (String) entry[0];
             ResourceKey<Item> key = ResourceKey.create(Registries.ITEM,
                 Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, name));
-            Item item = new Item(new Item.Properties().setId(key));
+            int burnTime = (int) entry[1];
+
+            Item.Properties props = new Item.Properties().setId(key);
+            if (burnTime > 0) {
+                props = props.component(DataComponents.COOKING_FUEL, fuel(burnTime));
+            }
+
+            Item item = new Item(props);
             Registry.register(BuiltInRegistries.ITEM,
                 Identifier.fromNamespaceAndPath(ModConstants.MOD_ID, name), item);
             ALL_ITEMS.put(name, item);

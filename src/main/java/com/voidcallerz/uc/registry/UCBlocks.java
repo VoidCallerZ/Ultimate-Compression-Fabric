@@ -245,7 +245,7 @@ public class UCBlocks {
                     .setId(key);
 
                 if (needsTool) props = props.requiresCorrectToolForDrops();
-                if (isLeaves) props = props.noOcclusion().isSuffocating((s, r, p) -> false).isViewBlocking((s, r, p) -> false);
+                if (isLeaves) props = props.noOcclusion().isSuffocating((s, r, p) -> false).isViewBlocking((s, r, p, box) -> false);
 
                 final BlockBehaviour.Properties finalProps = props;
                 Block block;

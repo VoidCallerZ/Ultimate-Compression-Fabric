@@ -1,7 +1,5 @@
 package com.voidcallerz.uc;
 
-import com.mojang.serialization.MapCodec;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.FallingBlock;
@@ -13,14 +11,7 @@ public class UCFallingBlock extends FallingBlock {
     }
 
     @Override
-    protected MapCodec<? extends FallingBlock> codec() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'codec'");
-    }
-
-    @Override
-    public int getDustColor(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
-        // TODO Auto-generated method stub
+    public int getDustColor(BlockState blockState, BlockGetter level, BlockPos pos) {
         throw new UnsupportedOperationException("Unimplemented method 'getDustColor'");
     }
 }
