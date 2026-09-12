@@ -39,6 +39,7 @@
         "uc:compressed_netherrack",
         "uc:compressed_oak_leaves",
         "uc:compressed_orange_concrete",
+        "uc:compressed_orange_poplar_leaves",
         "uc:compressed_packed_ice",
         "uc:compressed_pale_oak_leaves",
         "uc:compressed_pink_concrete",
@@ -46,6 +47,7 @@
         "uc:compressed_purple_concrete",
         "uc:compressed_quartz_block",
         "uc:compressed_red_concrete",
+        "uc:compressed_red_poplar_leaves",
         "uc:compressed_red_sandstone",
         "uc:compressed_sandstone",
         "uc:compressed_snow_block",
@@ -55,6 +57,7 @@
         "uc:compressed_tuff",
         "uc:compressed_white_concrete",
         "uc:compressed_yellow_concrete",
+        "uc:compressed_yellow_poplar_leaves",
         "uc:double_compressed_acacia_leaves",
         "uc:double_compressed_andesite",
         "uc:double_compressed_azalea_leaves",
@@ -93,6 +96,7 @@
         "uc:double_compressed_netherrack",
         "uc:double_compressed_oak_leaves",
         "uc:double_compressed_orange_concrete",
+        "uc:double_compressed_orange_poplar_leaves",
         "uc:double_compressed_packed_ice",
         "uc:double_compressed_pale_oak_leaves",
         "uc:double_compressed_pink_concrete",
@@ -100,6 +104,7 @@
         "uc:double_compressed_purple_concrete",
         "uc:double_compressed_quartz_block",
         "uc:double_compressed_red_concrete",
+        "uc:double_compressed_red_poplar_leaves",
         "uc:double_compressed_red_sandstone",
         "uc:double_compressed_sandstone",
         "uc:double_compressed_snow_block",
@@ -108,6 +113,7 @@
         "uc:double_compressed_sulfur",
         "uc:double_compressed_tuff",
         "uc:double_compressed_white_concrete",
-        "uc:double_compressed_yellow_concrete"
+        "uc:double_compressed_yellow_concrete",
+        "uc:double_compressed_yellow_poplar_leaves"
     ]
 }

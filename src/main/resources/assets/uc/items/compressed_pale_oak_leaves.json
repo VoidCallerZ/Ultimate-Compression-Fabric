@@ -1,12 +1,6 @@
 {
     "model": {
         "type": "minecraft:model",
-        "model": "uc:block/compressed_pale_oak_leaves",
-        "tints": [
-            {
-                "type": "minecraft:constant",
-                "value": -12012264
-            }
-        ]
+        "model": "uc:block/compressed_pale_oak_leaves"
     }
 }

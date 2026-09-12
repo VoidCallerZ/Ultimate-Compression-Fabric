@@ -88,6 +88,9 @@ MATERIALS = [
     "pale_moss_block", "pale_oak_log", "pale_oak_planks", "resin_block",
     # New in 26.2
     "cinnabar", "sulfur", "potent_sulfur",
+    # New in 26.3
+    "yellow_poplar_leaves", "red_poplar_leaves", "orange_poplar_leaves", "poplar_log", 
+    "poplar_planks",
 ]
 
 TEXTURE_OVERRIDES = {
@@ -120,7 +123,8 @@ LOG_TOP_TEXTURES = {
     "quartz_block":  "quartz_block_top",
     "sandstone":     "sandstone_top",
     "red_sandstone": "red_sandstone_top",
-    "pale_oak_log":    "pale_oak_log_top",
+    "pale_oak_log":  "pale_oak_log_top",
+    "poplar_log":    "poplar_log_top",
 }
 
 
@@ -132,7 +136,8 @@ LOG_TOP_TEXTURES = {
 TINTED_MATERIALS = {
     "oak_leaves", "spruce_leaves", "birch_leaves", "jungle_leaves",
     "acacia_leaves", "dark_oak_leaves", "mangrove_leaves", "cherry_leaves",
-    "pale_oak_leaves", "azalea_leaves", "flowering_azalea_leaves",
+    "pale_oak_leaves", "azalea_leaves", "flowering_azalea_leaves", 
+    "yellow_poplar_leaves", "red_poplar_leaves", "orange_poplar_leaves",
 }
 
 COMPRESSED_ITEM_TEXTURES = {

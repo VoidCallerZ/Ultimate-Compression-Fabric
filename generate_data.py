@@ -91,6 +91,8 @@ STANDARD_MATERIALS = [
     "pale_moss_block", "pale_oak_log", "pale_oak_planks", "resin_block",
     # New in 26.2
     "cinnabar", "sulfur", "potent_sulfur",
+    # New in 26.3
+    "yellow_poplar_leaves", "red_poplar_leaves", "orange_poplar_leaves", "poplar_planks",
 ]
 
 TOP_BOTTOM_MATERIALS = [
@@ -100,14 +102,37 @@ TOP_BOTTOM_MATERIALS = [
 LOG_MATERIALS = [
     "oak_log", "spruce_log", "birch_log", "jungle_log", "acacia_log",
     "dark_oak_log", "mangrove_log", "cherry_log", "bamboo_block", 
-    "crimson_stem", "warped_stem", "basalt", "pale_oak_log",
+    "crimson_stem", "warped_stem", "basalt", "pale_oak_log", "poplar_log",
 ]
 
 # Leaves need cutout_mipped render type and biome tint
 LEAVES_MATERIALS = {
     "oak_leaves", "spruce_leaves", "birch_leaves", "jungle_leaves", "acacia_leaves",
     "dark_oak_leaves", "mangrove_leaves", "cherry_leaves", "pale_oak_leaves",
-    "azalea_leaves", "flowering_azalea_leaves",
+    "azalea_leaves", "flowering_azalea_leaves", "yellow_poplar_leaves", 
+    "red_poplar_leaves", "orange_poplar_leaves",
+}
+
+# -------------------------------------------------------------------------
+# Inventory tint applied to leaf ITEMS, matching vanilla exactly.
+# Values read from the vanilla assets/minecraft/items/*_leaves.json files.
+#
+# Not every leaf is tinted: cherry, azalea, pale oak and the poplars ship
+# pre-coloured textures and have no "tints" array at all. Applying the green
+# default to those multiplies their texture and turns them green in the
+# inventory, so anything absent from this map gets no tint key.
+#
+# Placed blocks are tinted separately, via the block tint source in
+# UCClientSetup — this map only affects the item form.
+# -------------------------------------------------------------------------
+LEAVES_ITEM_TINTS = {
+    "oak_leaves":      -12012264,
+    "jungle_leaves":   -12012264,
+    "acacia_leaves":   -12012264,
+    "dark_oak_leaves": -12012264,
+    "birch_leaves":     -8345771,
+    "spruce_leaves":   -10380959,
+    "mangrove_leaves":  -7158200,
 }
 
 ALL_MATERIALS = STANDARD_MATERIALS + TOP_BOTTOM_MATERIALS + LOG_MATERIALS
@@ -145,7 +170,7 @@ COMPRESSED_ITEMS = [
     { "name": "compressed_lapis",           "base": "lapis_lazuli",    "burn": 0 },
     { "name": "compressed_redstone",        "base": "redstone",        "burn": 0 },
     { "name": "compressed_flint",           "base": "flint",           "burn": 0 },
-    { "name": "compressed_stick",           "base": "stick",           "burn": 0 },
+    { "name": "compressed_stick",           "base": "stick",           "burn": 900 },
     { "name": "compressed_leather",         "base": "leather",         "burn": 0 },
     { "name": "compressed_bone",            "base": "bone",            "burn": 0 },
     { "name": "compressed_string",          "base": "string",          "burn": 0 },
@@ -226,7 +251,7 @@ NO_TOOL_MATS = {
     "magenta_concrete_powder", "brown_concrete_powder", "light_blue_concrete_powder",
     "lime_concrete_powder", "ice", "packed_ice", "blue_ice", "clay", 
     "snow_block", "moss_block", "pale_moss_block", "pale_oak_log", 
-    "pale_oak_planks", "resin_block",
+    "pale_oak_planks", "resin_block", "poplar_log", "poplar_planks",
 }
 
 # Everything else that needs a tool defaults to needs_stone_tool:
@@ -393,28 +418,21 @@ def generate_item_models_blocks(resource_path: Path) -> int:
             if MC_VERSION == "1.21.4":
                 # 1.21.4+ also needs assets/<mod>/items/<name>.json
                 items_base = resource_path / "assets" / MOD_ID / "items"
-                if material in LEAVES_MATERIALS:
-                    # Match vanilla oak_leaves format exactly:
-                    # constant tint with default foliage green (-12012264 signed = 0xFF4E9A18)
-                    write_json(items_base / f"{name}.json", {
-                        "model": {
-                            "type": "minecraft:model",
-                            "model": f"{MOD_ID}:block/{name}",
-                            "tints": [
-                                {
-                                    "type": "minecraft:constant",
-                                    "value": -12012264
-                                }
-                            ]
+                model = {
+                    "type": "minecraft:model",
+                    "model": f"{MOD_ID}:block/{name}"
+                }
+                # Tinted leaves only — untinted ones must omit "tints"
+                # entirely or their texture gets multiplied by the tint.
+                tint = LEAVES_ITEM_TINTS.get(material)
+                if tint is not None:
+                    model["tints"] = [
+                        {
+                            "type": "minecraft:constant",
+                            "value": tint
                         }
-                    })
-                else:
-                    write_json(items_base / f"{name}.json", {
-                        "model": {
-                            "type": "minecraft:model",
-                            "model": f"{MOD_ID}:block/{name}"
-                        }
-                    })
+                    ]
+                write_json(items_base / f"{name}.json", {"model": model})
             count += 1
     return count
 
